@@ -1,0 +1,448 @@
+/* ============================
+   Books Archives — Library Theme (Updated)
+   Parchment  #f6f2ea | Leather  #c29b87
+   Oak        #a97954 | Manuscript #1e423f
+   Binding    #532c2e | Crimson  #34000b
+   ============================ */
+
+   :root{
+    --parchment:#f6f2ea;
+    --leather:#c29b87;
+    --oak:#a97954;
+    --manuscript:#1e423f;
+    --binding:#532c2e;
+    --crimson:#34000b;
+  
+    --paper: color-mix(in oklab, var(--parchment) 90%, white);
+    --card:  color-mix(in oklab, var(--parchment) 80%, white);
+    --text: var(--manuscript);
+    --text-strong: var(--binding);
+    --muted: color-mix(in oklab, var(--manuscript), #000 0% / 40%);
+    --link: var(--manuscript);
+    --link-hover: color-mix(in oklab, var(--manuscript), var(--oak) 35%);
+    --cta: var(--leather);
+    --cta-ink:#2a1b14;
+    --border: color-mix(in oklab, var(--manuscript), #000 0% / 16%);
+  
+    /* Layering */
+    --z-bg:-3;
+    --z-bg-lines:-2;
+    --z-page:1;
+    --z-sticky:1000;
+    --z-dropdown:1050;
+    --z-scrim:1100;
+    --z-drawer:1110;
+  
+    --radius:14px;
+    --max:1200px;
+    --shadow:0 10px 26px rgba(83,44,46,.18);
+  }
+  
+  *{box-sizing:border-box}
+  html,body,#root{height:100%}
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+    color:var(--text);
+    background:var(--parchment);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  
+  /* Fixed, alive background */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:var(--z-bg); pointer-events:none;
+    background:
+      radial-gradient(1000px 700px at 14% -10%, color-mix(in oklab, var(--leather), white 30%) .22, transparent 60%),
+      radial-gradient(900px 620px at 88% 0%, color-mix(in oklab, var(--oak), white 36%) .18, transparent 62%),
+      radial-gradient(820px 560px at 6% 85%, color-mix(in oklab, var(--manuscript), white 72%) .16, transparent 70%),
+      url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">\
+          <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter>\
+          <rect width="120" height="120" filter="url(%23n)" opacity="0.035" />\
+        </svg>') repeat,
+      linear-gradient(180deg, color-mix(in oklab, var(--parchment), white 8%), var(--parchment));
+    background-attachment:fixed, fixed, fixed, fixed, fixed;
+  }
+  
+  /* Abstract lines */
+  body::after{
+    content:"";
+    position:fixed; inset:0; z-index:var(--z-bg-lines); pointer-events:none; opacity:.55;
+    background:
+      url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">\
+          <defs>\
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">\
+              <stop offset="0%" stop-color="%23a97954" stop-opacity="0.25"/>\
+              <stop offset="100%" stop-color="%23532c2e" stop-opacity="0.25"/>\
+            </linearGradient>\
+            <linearGradient id="g2" x1="1" y1="0" x2="0" y2="1">\
+              <stop offset="0%" stop-color="%231e423f" stop-opacity="0.2"/>\
+              <stop offset="100%" stop-color="%23c29b87" stop-opacity="0.2"/>\
+            </linearGradient>\
+          </defs>\
+          <g stroke="url(%23g1)" stroke-width="2" fill="none">\
+            <path d="M60 0 V800" /><path d="M180 0 V800" /><path d="M300 0 V800" />\
+            <path d="M420 0 V800" /><path d="M540 0 V800" /><path d="M660 0 V800" />\
+            <path d="M780 0 V800" /><path d="M900 0 V800" /><path d="M1020 0 V800" />\
+          </g>\
+          <g stroke="url(%23g2)" stroke-width="2.5" fill="none" stroke-linecap="round">\
+            <path d="M0,520 C240,420 480,420 720,520" />\
+            <path d="M120,600 C360,500 600,500 900,600" />\
+            <path d="M-40,700 C260,590 560,590 1160,720" />\
+          </g>\
+        </svg>') center/cover no-repeat;
+    animation: shelfDrift 24s ease-in-out infinite alternate;
+  }
+  @keyframes shelfDrift{ 0%{ transform: translateY(-1.5%) scale(1.01); } 100%{ transform: translateY(1.5%) scale(1.01); } }
+  
+  /* Links */
+  a{ color:var(--link); text-decoration:none; transition: color .25s ease, opacity .25s ease, transform .25s ease; }
+  a:hover,a:focus{ text-decoration:none; color:var(--link-hover); }
+  a:focus-visible{ outline:2px solid color-mix(in oklab, var(--manuscript), var(--oak) 40%); outline-offset:2px; border-radius:6px; }
+  
+  .container{ max-width:var(--max); margin-inline:auto; padding:24px 16px; }
+  
+  /* Buttons with shine */
+  .btn{
+    display:inline-block; background:var(--cta); color:var(--cta-ink);
+    padding:10px 16px; border-radius:12px; border:0; cursor:pointer;
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
+    position:relative; overflow:hidden; box-shadow:0 0 0 rgba(0,0,0,0);
+  }
+  .btn:hover,.btn:focus{ filter:brightness(1.05); transform:translateY(-1px); box-shadow:var(--shadow); }
+  .btn.outline{ background:transparent; border:1px solid var(--oak); color:var(--text); }
+  .btn::after{
+    content:""; position:absolute; inset:-50% -30% auto -30%; height:200%;
+    background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 45%, transparent 60%);
+    transform: translateX(-120%) rotate(12deg); transition: transform .45s ease; pointer-events:none;
+  }
+  .btn:hover::after{ transform: translateX(10%) rotate(12deg); }
+  
+  /* Grid & Cards (smoother with review) */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25)), var(--card);
+    border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    will-change: transform;
+  }
+  .card:hover{ transform: translateY(-6px) scale(1.01); box-shadow: 0 16px 36px rgba(83,44,46,.22); border-color: color-mix(in oklab, var(--oak), black 5%); }
+  .cover{ aspect-ratio:3/4; position:relative; overflow:hidden; background:linear-gradient(180deg, rgba(169,121,84,.15), rgba(194,155,135,.10)); border-bottom:1px solid var(--border); }
+  .cover img{ width:100%; height:100%; object-fit:cover; transform: scale(1.02); transition: transform .35s ease; display:block; }
+  .card:hover .cover img{ transform: scale(1.06); }
+  .card-body{ padding:14px; }
+  .card-title{ font-weight:700; color:var(--text-strong); margin:0 0 4px; }
+  .card-meta{ font-size:.92rem; color:var(--muted); margin-bottom:8px; }
+  .card-review{
+    background: color-mix(in oklab, var(--oak), white 60%);
+    color:#fff;
+    border:1px solid color-mix(in oklab, var(--oak), white 72%);
+    border-radius:10px;
+    padding:8px 10px;
+    margin-top:8px;
+    font-size:.95rem;
+  }  .card-actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  
+  /* Clamp */
+  .line-clamp{ display:-webkit-box; display:box; -webkit-box-orient:vertical; box-orient:vertical; overflow:hidden; -webkit-line-clamp:3; line-clamp:3; }
+  
+  /* Navbar (sticky + scrolled state) */
+  .navbar{
+    position:sticky; top:0; z-index:var(--z-sticky);
+    background: color-mix(in oklab, var(--parchment), white 50%) .9;
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--border);
+    transition: box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+  }
+  .navbar.scrolled{
+    box-shadow: 0 8px 22px rgba(83,44,46,.14);
+    background: color-mix(in oklab, var(--parchment), white 30%) .92;
+    border-color: color-mix(in oklab, var(--binding), #000 0% / 18%);
+  }
+  .nav-inner{ max-width:var(--max); margin-inline:auto; display:flex; align-items:center; justify-content:space-between; padding:12px 16px; }
+  .brand{ font-weight:800; color:var(--binding); display:inline-flex; align-items:center; gap:8px; }
+  .nav-links{ display:flex; align-items:center; gap:10px; }
+  .nav-links a{ padding:10px 12px; border-radius:10px; color:var(--manuscript); }
+  .nav-links a:hover{ background: color-mix(in oklab, var(--oak), white 72%); transform: translateY(-1px); }
+  
+  .hamburger{ display:none; border:1px solid var(--border); background: var(--paper); color: var(--manuscript); padding:10px 12px; border-radius:10px; }
+  .body-lock{ overflow:hidden; }
+  
+  /* Scrim now blurs whole background when menu open */
+  .scrim{
+    position:fixed; inset:0;
+    background: rgba(52,0,11,.25);
+    backdrop-filter: blur(6px);
+    opacity:0; pointer-events:none; transition:opacity .28s ease;
+    z-index:var(--z-scrim);
+  }
+  .scrim.open{ opacity:1; pointer-events:auto; }
+  
+  /* Drawer */
+  .drawer{
+    position:fixed; inset:0 0 0 auto; width:min(82vw, 360px); height:100%;
+    background: color-mix(in oklab, var(--binding), var(--parchment) 18% / 92%);
+    color:#fff; border-left:1px solid color-mix(in oklab, var(--binding), #000 0% / 25%);
+    transform: translateX(100%); transition: transform .3s ease; z-index:var(--z-drawer);
+    backdrop-filter: blur(14px);
+    display:flex; flex-direction:column; padding:16px 16px 20px;
+  }
+  .drawer.open{ transform: translateX(0); }
+  
+  /* Drawer Top bar with big X close */
+  .drawer-top{
+    display:flex; align-items:center; justify-content:flex-end; margin-bottom:10px;
+  }
+  .close-x{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:10px; border:1px solid color-mix(in oklab, var(--parchment), #000 0% / 18%);
+    background: color-mix(in oklab, var(--parchment), var(--binding) 8% / 30%);
+    color:#fff; cursor:pointer;
+  }
+  .close-x:hover{ filter:brightness(1.06); transform:translateY(-1px); }
+  
+  .nav-group{ display:flex; flex-direction:column; gap:12px; }
+  .nav-btn{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid color-mix(in oklab, var(--parchment), #000 0% / 18%);
+    background: color-mix(in oklab, var(--leather), var(--oak) 35%);
+    color:#2a1b14; font-weight:800; font-size:1.06rem;
+    box-shadow: 0 10px 22px rgba(0,0,0,.15);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, background-color .18s ease;
+  }
+  .nav-btn:hover{ transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 16px 32px rgba(0,0,0,.2); }
+  
+  .nav-btn.secondary{
+    background: color-mix(in oklab, var(--oak), var(--leather) 25%);
+    color:#fff;
+  }
+  /* Add Book slightly darker than Browse */
+  .nav-btn.strong{
+    background: color-mix(in oklab, var(--binding), var(--oak) 40%);
+    color:#fff;
+  }
+  
+  /* HERO */
+  .hero{
+    position:relative; background:
+      radial-gradient(720px 320px at 30% -10%, color-mix(in oklab, var(--leather), white 40%) .22, transparent 70%),
+      radial-gradient(660px 280px at 95% 0%, color-mix(in oklab, var(--oak), white 38%) .18, transparent 70%),
+      linear-gradient(135deg, color-mix(in oklab, var(--leather), white 50%) .12, color-mix(in oklab, var(--oak), white 50%) .10),
+      var(--paper);
+    padding:28px; border:1px solid var(--border); border-radius:var(--radius); margin-bottom:24px; overflow:visible;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:
+      url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">\
+          <g fill="none" stroke="%23532c2e" stroke-opacity=".25" stroke-width="2">\
+            <path d="M0 220 C200 160 400 160 600 220 S1000 280 1200 220" />\
+            <path d="M0 300 C240 240 480 240 720 300 S960 360 1200 300" />\
+          </g>\
+          <g fill="none" stroke="%231e423f" stroke-opacity=".22" stroke-width="2">\
+            <path d="M0 120 C260 60 520 60 900 120" />\
+          </g>\
+        </svg>') center/cover no-repeat;
+    animation: heroSweep 16s ease-in-out infinite alternate;
+  }
+  .hero > *{ position:relative; z-index:1; }
+  @keyframes heroSweep{ 0%{ transform: translateY(-3%);} 100%{ transform: translateY(3%);} }
+  .brand-emph{ color:var(--binding); }
+  
+  .hero-badges{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .chip-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 12px; border-radius:999px; border:1px solid var(--border);
+    background: color-mix(in oklab, var(--oak), white 60%);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(169,121,84,.18);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  }
+  .chip-btn:hover{ transform: translateY(-2px); filter: brightness(1.05); box-shadow:0 12px 24px rgba(169,121,84,.26); }
+  
+  /* Toolbar */
+  .toolbar{ position:relative; z-index:var(--z-page); display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:16px; }
+  
+  /* Fancy Search Bar */
+  .search-wrap{
+    --ring: color-mix(in oklab, var(--manuscript), var(--oak) 40%);
+    position:relative; flex:1; min-width:260px;
+  }
+  .search{
+    width:100%;
+    padding:12px 42px 12px 40px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background: color-mix(in oklab, var(--paper), white 6%);
+    color:var(--text);
+    box-shadow: 0 8px 24px rgba(83,44,46,.08) inset, 0 4px 14px rgba(83,44,46,.08);
+    transition: box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+  }
+  .search:focus{ outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklab, var(--ring), transparent 80%), 0 8px 24px rgba(83,44,46,.08) inset; }
+  .search-ico{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:20px; height:20px; color:var(--manuscript); opacity:.8; pointer-events:none;
+  }
+  .clear-btn{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    background:transparent; border:0; padding:4px; cursor:pointer; color:var(--manuscript); opacity:.6;
+  }
+  .clear-btn:hover{ opacity:1; }
+  
+  /* Dropdown (unchanged base) */
+  .dropdown{ position:relative; z-index:var(--z-dropdown); }
+  .drop-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background: color-mix(in oklab, var(--oak), white 64%);
+    color:#fff; border:0; border-radius:10px; padding:10px 12px; cursor:pointer;
+    box-shadow:0 6px 16px rgba(169,121,84,.24); transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .drop-btn:hover{ transform: translateY(-1px); filter: brightness(1.03); box-shadow: 0 10px 22px rgba(169,121,84,.3); }
+  .menu{
+    position:absolute; top:calc(100% + 8px); left:0; min-width:240px; z-index:var(--z-dropdown);
+    background: var(--paper); border:1px solid var(--border); border-radius:12px;
+    box-shadow: 0 16px 36px rgba(83,44,46,.18);
+    overflow:hidden; max-height:0; opacity:0; transform: translateY(-6px);
+    transition: max-height .28s ease, opacity .18s ease, transform .28s ease;
+    will-change:max-height, transform, opacity;
+  }
+  .menu.open{ max-height:60vh; opacity:1; transform: translateY(0); }
+  .menu ul{ list-style:none; margin:0; padding:6px; max-height:60vh; overflow:auto; }
+  .menu button{
+    width:100%; text-align:left; padding:12px; border:0; background:transparent; color:var(--text);
+    border-radius:10px; cursor:pointer; font-size:.98rem;
+  }
+  .menu button:hover{ background: color-mix(in oklab, var(--oak), white 72%); }
+  
+  /* Book Details */
+  .details{
+    background: var(--paper);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    padding:20px;
+  }
+  .details-hero{ display:grid; grid-template-columns:260px 1fr; gap:22px; }
+  .details .cover{ border-radius:10px; border:1px solid var(--border); }
+  .details h1{ margin:0 0 10px; }
+  .meta-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px 16px; margin-top:14px; }
+  .meta-item{ background: color-mix(in oklab, var(--paper), white 8%); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+  .details-actions{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .stars{ color:var(--binding); letter-spacing:2px; }
+  
+  /* Forms (Add Book) */
+  .form{
+    background: var(--paper);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    padding:18px;
+  }
+  .form-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .form-row-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .form label{ font-weight:700; font-size:.95rem; color:var(--text-strong); }
+  .input, .textarea, .select{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+    background: color-mix(in oklab, var(--paper), white 6%); color:var(--text);
+  }
+  .textarea{ min-height:110px; resize:vertical; }
+  .switch{ display:flex; align-items:center; gap:8px; }
+  .form-actions{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+  .help{ font-size:.88rem; color:var(--muted); }
+  
+  /* Anchors: avoid hiding behind sticky navbar */
+  section[id]{ scroll-margin-top: 90px; }
+  
+  @media (max-width:920px){ .details-hero{ grid-template-columns:200px 1fr; } }
+  @media (max-width:720px){
+    .nav-links{ display:none; }
+    .hamburger{ display:inline-flex; align-items:center; gap:8px; }
+    .details-hero{ grid-template-columns:1fr; }
+    .form-row, .form-row-3{ grid-template-columns:1fr; }
+  }
+  /* Dropdown styles for Browse page */
+.dropdown {
+  position: relative;
+}
+
+.dropdown .menu {
+  display: none;
+  position: absolute;
+  inset-inline-start: 0;
+  margin-block-start: 8px;
+  background: var(--binding, #532c2e); /* use theme background */
+  border: 1px solid var(--oak, #a97954);
+  border-radius: 6px;
+  padding: 4px 0;
+  z-index: var(--z-dropdown, 1050);
+  min-width: 180px;
+}
+
+.dropdown .menu.open {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown .menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown .menu li button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.dropdown .menu li button:hover {
+  background: var(--crimson, #34000b);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.site-footer {
+  background-color: #f6f2ea00; /* Manuscript color */
+  color: #1e423f; /* Parchment */
+  padding: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  border-top: 1px solid #c29b87; /* Leather accent */
+  margin-top: auto;
+}
+
+.site-footer a {
+  color: #a97954; /* Leather link */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.site-footer a:hover {
+  color: #775841; /* Oak */
+}
