@@ -47,9 +47,12 @@ npm run dev
 ```
 Visit http://localhost:5173 in your browser.
 
+---
 
 ### 📥 JSON Seed Info
 Book data is stored in src/data/books.seed.json and imported into Redux on app load. You can expand or modify the JSON file to update the catalog.
+
+---
 
 ### ✨ Credits
 UI & Theme design: **Risssabh**
